@@ -1,10 +1,35 @@
-sudo: false
+sudo: required
 language: python
 python:
   - 3.6
+
+cache: bundler
+
+branches:
+  only:
+    - alpha
+    - master
+
 install: pip install -r requirements.txt
+
+env:
+  - FIVEMAT_PROFILE=1
+    CC_TEST_REPORTER_ID=6e941ff4cdffb1c1f6fa87a9f90161b2e3ff01d27ab52f0c083613a73a6ace27
+    MAKE_TARGET=test-ci
+
 before_script:
   - export FLASK_APP="$TRAVIS_BUILD_DIR/manage.py"
 
-script: python manage.py runserver
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+
+script: 
+  - python manage.py cov
+  - python manage.py test
 #test
+
+after_success:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
