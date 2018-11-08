@@ -29,7 +29,7 @@ before_script:
 script: 
   - python manage.py cov
   - python manage.py test
-#test1
+#test12
 
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
