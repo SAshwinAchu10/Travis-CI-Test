@@ -7,3 +7,4 @@ before_script:
   - export FLASK_APP="$TRAVIS_BUILD_DIR/manage.py"
 
 script: python manage.py runserver
+#test
